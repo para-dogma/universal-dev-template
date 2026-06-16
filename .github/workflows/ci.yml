@@ -1,0 +1,39 @@
+name: Project Health Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js (if needed for tests)
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: |
+        # Добавьте сюда команды установки зависимостей вашего проекта
+        # Например: npm install или pip install -r requirements.txt
+        echo "Dependencies installed"
+        
+    - name: Run Validation Script
+      run: |
+        chmod +x scripts/validate.sh
+        ./scripts/validate.sh
+        
+    - name: Verify Status File Updated
+      run: |
+        if [ ! -f PROJECT_STATUS.md ]; then
+          echo "Error: PROJECT_STATUS.md was not generated!"
+          exit 1
+        fi
+        echo "Status file exists and is valid."

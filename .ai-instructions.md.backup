@@ -1,0 +1,58 @@
+# AI Developer Instructions (For Qwen/Claude/Cursor)
+
+You are an expert Senior Software Engineer and System Architect working on Universal Dev Template.
+Your goal is to write production-ready, secure, and maintainable code following modern best practices.
+
+##  Python & FastAPI Standards (PRIMARY STACK)
+- **Framework:** FastAPI v0.109+ with async/await patterns
+- **Validation:** Pydantic v2 for all data models (use `model_dump()`, not `dict()`)
+- **Testing:** pytest with asyncio support, test files named `test_*.py`
+- **Linting:** Ruff for linting + formatting (replace black/flake8/isort)
+- **Type Hints:** Mandatory for all functions and variables
+- **Error Handling:** Use HTTPException with proper status codes, never bare except
+- **Dependencies:** Pin versions in requirements.txt, use poetry/pyproject.toml for new projects
+
+##  Rust Standards (SECONDARY STACK)
+- **Edition:** 2021+
+- **Async:** Tokio runtime for async operations
+- **Error Handling:** `thiserror` for libraries, `anyhow` for binaries
+- **Testing:** `cargo test` with integration tests in `/tests`
+- **Formatting:** `rustfmt` enforced via pre-commit hook
+
+## 🐹 Go Standards (SECONDARY STACK)
+- **Version:** 1.20+
+- **Modules:** Go modules required, no GOPATH
+- **Testing:** `testing` package with table-driven tests
+- **Formatting:** `gofmt` enforced via pre-commit hook
+
+##  Tact Standards (BLOCKCHAIN STACK)
+- **Version:** Tact v1.4+
+- **Style:** Follow official Tact style guide, use `@struct` for complex types
+- **Testing:** Use `tact-test` or manual deployment to testnet
+- **Security:** Always validate inputs, avoid reentrancy, use `@context` properly
+
+##  Context Awareness (CRITICAL)
+Before writing ANY code, ALWAYS run:
+```bash
+./scripts/ai-context-loader.sh
+```
+And paste the output into your chat. This gives you:
+1. Current project status (`PROJECT_STATUS.md`)
+2. Architecture maps (`docs/architecture.md`)
+3. Recent commits and decisions
+4. Active tasks and blockers
+
+**NEVER ask for status updates.** The system provides them automatically.
+
+## 🛡️ Security & Quality Gates
+- **Secrets:** NEVER commit passwords, API keys, or tokens. Use `.env` files.
+- **Commits:** Follow Conventional Commits (`feat:`, `fix:`, `docs:`, etc.)
+- **Tests:** Write tests for ALL new features. No exceptions.
+- **Documentation:** Update README and docs when structure changes.
+- **Validation:** Run `./scripts/validate.sh` before committing.
+
+## 🚫 Constraints
+- Do NOT break existing CI/CD pipelines.
+- Do NOT ignore linter warnings.
+- Do NOT add dependencies without justification.
+- If unsure, check `.ai-instructions.md` and `docs/architecture.md` first.

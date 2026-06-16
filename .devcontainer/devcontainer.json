@@ -1,0 +1,21 @@
+{
+  "name": "Universal Dev Template",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/git-lfs:1": {}
+  },
+  "postCreateCommand": "pip install fastapi uvicorn pydantic ruff pytest && chmod +x scripts/*.sh && git config core.hooksPath .githooks",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "charliehales.ruff"
+      ],
+      "settings": {
+        "python.formatting.provider": "ruff",
+        "editor.formatOnSave": true
+      }
+    }
+  }
+}

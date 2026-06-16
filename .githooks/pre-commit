@@ -1,0 +1,9 @@
+#!/bin/bash
+# Блокирует коммиты с явными секретами
+echo "🛡️ Scanning for secrets..."
+if git diff --cached | grep -iE '(password|secret|api_key|token|private_key)\s*[:=]\s*["\x27][a-zA-Z0-9]{8,}'; then
+    echo " STOP! Potential secret detected in staged files."
+    echo "Please use .env file and add it to .gitignore"
+    exit 1
+fi
+echo "✅ No secrets detected. Safe to commit."
