@@ -1,17 +1,33 @@
 #!/bin/bash
-echo "🚀 =========================================="
-echo "   Welcome to Universal Dev Template!"
-echo "=============================================="
-echo ""
-echo "🔍 Checking your environment..."
-command -v python3 &>/dev/null && echo "✅ Python3 found" || echo "⚠️  Python3 missing (optional)"
-command -v git &>/dev/null && echo "✅ Git found" || echo "❌ Git is required!"
-command -v node &>/dev/null && echo "✅ Node.js found" || echo "⚠️  Node.js missing (optional)"
-echo ""
-echo "💡 Quick Start Guide:"
-echo "1. Run ./scripts/validate.sh to check project health"
-echo "2. Read .ai-instructions.md for AI collaboration rules"
-echo "3. Copy examples/<lang>/* to root for your stack"
-echo "4. Start coding and let the system handle the rest!"
-echo ""
-echo "Happy Engineering! 🛠️"
+
+# Welcome message - run manually if needed
+if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+    cat << 'HELP'
+
+Universal Dev Template - Quick Start
+=====================================
+
+Check project:    ./scripts/start.sh diagnose
+Get AI context:   ./scripts/start.sh ai
+Validate code:    ./scripts/start.sh validate
+Run tests:        ./scripts/start.sh test
+
+For more info:    ./scripts/start.sh
+HELP
+    exit 0
+fi
+
+# Show welcome only if .no_welcome doesn't exist
+if [ ! -f ".no_welcome" ]; then
+    cat << 'WELCOME'
+
+Welcome to Universal Dev Template!
+
+Quick start:
+  ./scripts/start.sh diagnose
+
+Hide this message:
+  touch .no_welcome
+
+WELCOME
+fi

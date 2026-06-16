@@ -38,3 +38,7 @@ cd universal-dev-template
 - ✅ Tests included
 
 **Уровень: АК-47** — работает везде, чинится сам.
+
+## AI Transformation Test
+
+See [docs/ai-transformation-test.md](docs/ai-transformation-test.md) for detailed test results.
