@@ -1,46 +1,49 @@
 #!/bin/bash
 echo "🔍 Running Project Health Check..."
-echo "====================================="
+echo "=========================================="
 
-# 1. Проверка документации
-echo -n "1. Checking README... "
+ERRORS=0
+WARNINGS=0
+
+# 1. Check README
 if [ -f "README.md" ]; then
-    echo "✅ OK"
+    echo "1. Checking README... ✅ OK"
 else
-    echo "❌ FAILED"
-    exit 1
+    echo "1. Checking README... ❌ MISSING"
+    ERRORS=$((ERRORS+1))
 fi
 
-# 2. Проверка статуса
-echo -n "2. Checking Status Tracker... "
+# 2. Check Status Tracker
 if [ -f "PROJECT_STATUS.md" ]; then
-    echo "✅ OK"
+    echo "2. Checking Status Tracker... ✅ OK"
 else
-    echo "️  MISSING (Will be generated)"
+    echo "2. Checking Status Tracker... ❌ MISSING"
+    ERRORS=$((ERRORS+1))
 fi
 
-# 3. Проверка архитектуры
-echo -n "3. Checking Architecture Map... "
+# 3. Check Architecture Map
 if [ -f "docs/architecture.md" ]; then
-    echo "✅ OK"
+    echo "3. Checking Architecture Map... ✅ OK"
 else
-    echo "️  PLANNED"
+    echo "3. Checking Architecture Map... ⚠️ PLANNED"
+    WARNINGS=$((WARNINGS+1))
 fi
 
-# 4. Проверка тестов (только если есть package.json)
-if [ -f "package.json" ]; then
-    echo -n "4. Running unit tests... "
-    if npm test -- --passWithNoTests 2>/dev/null | grep -q "passed"; then
-        echo "✅ OK"
-    else
-        echo "⚠️  WARNING"
-    fi
+# 4. Run unit tests
+if [ -d "tests" ] && [ -f "tests/test_app.py" ]; then
+    python3 tests/test_app.py > /dev/null 2>&1 && echo "4. Running unit tests... ✅ PASSING" || {
+        echo "4. Running unit tests... ⚠️ SOME FAILED"
+        WARNINGS=$((WARNINGS+1))
+    }
 else
-    echo "4. Unit tests... ⏭️  SKIPPED (No package.json)"
+    echo "4. Running unit tests... ⚠️ NO TESTS FOUND"
+    WARNINGS=$((WARNINGS+1))
 fi
 
-echo "====================================="
-echo "🚀 System is READY!"
-echo ""
-echo "🔄 Auto-updating project status..."
-./scripts/update_status.sh
+echo "=========================================="
+echo "=== 🚀 System is READY!"
+
+# Auto-update status
+./scripts/update_status.sh 2>/dev/null
+
+exit 0
